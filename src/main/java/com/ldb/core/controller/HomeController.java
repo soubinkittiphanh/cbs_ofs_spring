@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ldb.core.api.JWTUtility;
-import com.ldb.core.api.model.JWTRequest;
-import com.ldb.core.api.model.JWTResponse;
+import com.ldb.core.model.JWTRequest;
+import com.ldb.core.model.JWTResponse;
 
 @RestController
 public class HomeController {
