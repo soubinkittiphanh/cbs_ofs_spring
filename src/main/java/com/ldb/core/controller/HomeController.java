@@ -6,12 +6,15 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ldb.core.api.JWTUtility;
 import com.ldb.core.model.JWTRequest;
 import com.ldb.core.model.JWTResponse;
+import com.ldb.core.service.UserService;
+
 
 @RestController
 public class HomeController {
@@ -21,25 +24,29 @@ public class HomeController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserService userService;
-    
+
     @GetMapping("/")
-    public String greeting(){
+    public String greeting() {
         return "Welcome to API ";
     }
-    @GetMapping("/authenticate")
-    public JWTResponse authenticate(@RequestBody JWTRequest jwtRequest)throws Exception{
+
+    @PostMapping("/authenticate")
+    public JWTResponse authenticate(@RequestBody JWTRequest jwtRequest) throws Exception {
+        // logger.info("Authenticating user");
+        System.out.println("USER: " + jwtRequest.getUserName());
+        System.out.println("Password: " + jwtRequest.getPassword());
         try {
-            
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(), jwtRequest.getPassword()));
+
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(), jwtRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            //TODO: handle exception
-            throw new Exception("INVALID_CREDENTIALS",e);
+            // TODO: handle exception
+            throw new Exception("INVALID_CREDENTIALS", e);
         }
 
-        final UserDetails userDetails=userService.loadUserByUsername(jwtRequest.getUserName());
-        final String token =jwtUtility.generateToken(userDetails);
+        final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUserName());
+        final String token = jwtUtility.generateToken(userDetails);
+        System.out.println("TOKEN: "+token);
         return new JWTResponse(token);
     }
 }
-
-
