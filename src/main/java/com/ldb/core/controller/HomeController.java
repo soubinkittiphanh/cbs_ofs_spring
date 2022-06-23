@@ -1,5 +1,7 @@
 package com.ldb.core.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,7 +26,7 @@ public class HomeController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserService userService;
-
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @GetMapping("/")
     public String greeting() {
         return "Welcome to API ";
@@ -32,9 +34,7 @@ public class HomeController {
 
     @PostMapping("/authenticate")
     public JWTResponse authenticate(@RequestBody JWTRequest jwtRequest) throws Exception {
-        // logger.info("Authenticating user");
-        System.out.println("USER: " + jwtRequest.getUserName());
-        System.out.println("Password: " + jwtRequest.getPassword());
+        logger.info("Authenticating user");
         try {
 
             authenticationManager.authenticate(
@@ -46,7 +46,6 @@ public class HomeController {
 
         final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUserName());
         final String token = jwtUtility.generateToken(userDetails);
-        System.out.println("TOKEN: "+token);
         return new JWTResponse(token);
     }
 }

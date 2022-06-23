@@ -33,16 +33,21 @@ public class JwtFilter extends OncePerRequestFilter {
 
             throws ServletException, IOException {
 
-            String authorisation = request.getHeader("Authorization");
-            String token = null;
-            String userName = null;
-            logger.info("Authenticating user");
+        String authorisation = request.getHeader("Authorization");
+        String token = null;
+        String userName = null;
+        logger.info("===>PATH: " + request.getServletPath());
+        logger.info("Authenticating user");
+        if (request.getServletPath().equals("/authenticate")) {
+            filterChain.doFilter(request, response);
+        } else {
+
             if (null != authorisation && authorisation.startsWith("Bearer ")) {
                 token = authorisation.substring(7);
                 userName = jwtUtility.getUserNameFromToken(token);
                 logger.info("Token provided");
             }
-            
+
             if (null != userName && SecurityContextHolder.getContext().getAuthentication() == null) {
                 logger.info("Name provided");
                 UserDetails userDetails = userService.loadUserByUsername(userName);
@@ -53,9 +58,10 @@ public class JwtFilter extends OncePerRequestFilter {
                             .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
-               
+
             }
             filterChain.doFilter(request, response);
+        }
 
     }
 

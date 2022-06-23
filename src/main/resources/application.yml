@@ -1,0 +1,27 @@
+jwt:
+  secret: "opOSDKpllsllwsd455sd22"
+sever:
+  port: 8082
+corebank:
+  uat:
+    ip: "10.0.4.135"
+    port: 11024
+    user: "DMUSER.13"
+    pass: "123456"
+  pro:
+    ip: "10.0.4.132"
+    port: 11024
+    user: "DMUSER"
+    pass: "0000"
+  stmt10: ""
+  stmt11: ""
+  stmt12: ""
+  stmt13: ""
+  stmt14: ""
+  stmt15: ""
+  stmt16: ""
+  stmt17: ""
+  stmt18: ""
+  stmt19: ""
+  version:
+    passreset: "PASSWORD.RESET,RESET/I/PROCESS,"
