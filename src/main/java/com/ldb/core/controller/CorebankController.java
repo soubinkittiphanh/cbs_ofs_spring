@@ -1,8 +1,14 @@
 package com.ldb.core.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
+import java.net.http.HttpResponse;
 import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.ldb.core.api.T24Core;
 import com.ldb.core.model.T24Request;
 import com.ldb.core.model.T24Response;
 import com.ldb.core.service.CorebankService;
+import com.mashape.unirest.http.Unirest;
 
 @RestController
 @RequestMapping(path = "/api/v1/core")
@@ -29,6 +37,7 @@ public class CorebankController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private CorebankService corebankService;
+    private  RestTemplate restTemplate;
     @PostMapping("/resetpassword")
     public T24Response resetT24UserPassword(@RequestBody T24Request t24Request) {
         // PASSWORD.RESET,RESET/I/PROCESS,
@@ -64,4 +73,6 @@ public class CorebankController {
 
 
     }
+
+
 }
